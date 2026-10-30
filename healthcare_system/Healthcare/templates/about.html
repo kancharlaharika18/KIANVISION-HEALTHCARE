@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>About - Smart Healthcare</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff;color:#333}
+.container{max-width:1000px;margin:30px auto;padding:0 20px}
+.card{background:#fff;padding:30px 35px;border-radius:16px;box-shadow:0 8px 25px rgba(0,0,0,0.08);margin-bottom:25px}
+h1{color:#0d5bd1;margin:0 0 10px 0}
+h2{color:#0a4bb5;margin-top:25px}
+h3{color:#0d5bd1}
+ul{line-height:1.8}
+.badge{display:inline-block;background:#eef3ff;color:#0d5bd1;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:bold;margin:4px}
+.grid{display:flex;flex-wrap:wrap;gap:20px}
+.box{flex:1;min-width:250px;background:#f8faff;padding:20px;border-radius:12px;border-left:4px solid #0d5bd1}
+.tech{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+</style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="container">
+
+  
+  <div class="card" style="background:linear-gradient(135deg,#0d5bd1,#0a4bb5);color:#fff">
+    <h1 style="color:#fff">✚ About Smart Healthcare Appointment System</h1>
+    <p style="font-size:15px;opacity:0.95;line-height:1.7;margin-top:12px">
+      Smart Healthcare Appointment & Management System is a full-stack Django project developed for <b>KIANVISION Internship</b>. 
+      It allows patients and doctors to manage appointments easily - Book, View, Cancel, Track History with proper validation.
+    </p>
+    <div style="margin-top:15px">
+      <span class="badge" style="background:#fff;color:#0d5bd1">Full-Stack</span>
+      <span class="badge" style="background:#fff;color:#0d5bd1">Django + Python</span>
+      <span class="badge" style="background:#fff;color:#0d5bd1">Bangalore</span>
+    </div>
+  </div>
+
+  
+  <div class="card">
+    <h2>📋 PDF - 10 Features Implementation</h2>
+    <div class="grid" style="margin-top:20px">
+      <div class="box"><h3>1. Patient Registration</h3><p style="font-size:13px">Name, Email (unique), Phone, Age, Gender. URL: /register/</p></div>
+      <div class="box"><h3>2. Doctor Management</h3><p style="font-size:13px">Name, Specialization, Experience, Contact. Add via /admin/</p></div>
+      <div class="box"><h3>3. Search Doctor</h3><p style="font-size:13px">Search by name or specialization. URL: /doctors/?q=Cardiology</p></div>
+      <div class="box"><h3>4. Book Appointment</h3><p style="font-size:13px">Patient + Doctor + Date + Time. Duplicate validation.</p></div>
+      <div class="box"><h3>5. View Appointments</h3><p style="font-size:13px">Upcoming Scheduled appointments. URL: /my-appointments/</p></div>
+      <div class="box"><h3>6. Cancel Appointment</h3><p style="font-size:13px">Cancel button -> status Cancelled</p></div>
+      <div class="box"><h3>7. Appointment Status</h3><p style="font-size:13px">Scheduled, Completed, Cancelled, Rescheduled</p></div>
+      <div class="box"><h3>8. Role-Based System</h3><p style="font-size:13px">Admin Dashboard /dashboard/ - counts & recent appointments</p></div>
+      <div class="box"><h3>9. Input Validation</h3><p style="font-size:13px">unique email + unique_together doctor/date/time - no double booking</p></div>
+      <div class="box"><h3>10. Appointment History</h3><p style="font-size:13px">Completed & Cancelled history. URL: /history/</p></div>
+    </div>
+  </div>
+
+  
+  <div class="card">
+    <h2>💻 Tech Stack</h2>
+    <div class="tech">
+      <span class="badge">Python 3.11</span>
+      <span class="badge">Django 5.0</span>
+      <span class="badge">SQLite DB</span>
+      <span class="badge">HTML5 + CSS3</span>
+      <span class="badge">ORM - Models</span>
+      <span class="badge">Q Search</span>
+      <span class="badge">Messages Framework</span>
+    </div>
+    <br>
+    <h3>Project Structure</h3>
+    <pre style="background:#f2f6ff;padding:15px;border-radius:10px;font-size:13px;overflow:auto">HealthcareSystem/
+  app/
+    models.py - Patient, Doctor, Appointment
+    views.py - 10 Functions
+    urls.py - All Routes
+    templates/ - 10 HTML Files
+      navbar.html, footer.html, home.html, about.html,
+      doctor_list.html, patient_register.html, book_appointment.html,
+      my_appointments.html, appointment_history.html, admin_dashboard.html
+</pre>
+  </div>
+
+  
+  <div class="card" style="text-align:center">
+    <h2>👨‍💻 Developer Info</h2>
+    <p><b>KIANVISION Internship - Full Stack Developer</b></p>
+    <p style="font-size:13px;color:#666">Project: KIANVISION-SMART-HEALTHCARE-SYSTEM<br>Location: Bangalore, Karnataka<br>Year: 2026</p>
+    <br>
+    <a href="/doctors/" style="background:#0d5bd1;color:#fff;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold">View Doctors →</a>
+    <a href="/dashboard/" style="background:#071a3f;color:#fff;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;margin-left:10px">Admin Dashboard</a>
+  </div>
+
+</div>
+
+{% include 'footer.html' %}
+</body>
+</html>

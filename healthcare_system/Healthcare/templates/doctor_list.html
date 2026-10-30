@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Doctors - Smart Healthcare</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff}
+.top{max-width:1100px;margin:25px auto 10px auto;padding:0 20px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px}
+.top h2{color:#0d5bd1;margin:0}
+.search-box{display:flex;gap:8px;flex:1;max-width:500px}
+.search-box input{flex:1;padding:12px 16px;border-radius:30px;border:1px solid #ccc;outline:none;font-size:14px}
+.search-box input:focus{border-color:#0d5bd1;box-shadow:0 0 0 3px rgba(13,91,209,0.15)}
+.btn-search{background:#0d5bd1;color:#fff;border:none;padding:12px 22px;border-radius:30px;font-weight:bold;cursor:pointer}
+.btn-clear{background:#fff;color:#555;border:1px solid #ccc;padding:12px 18px;border-radius:30px;text-decoration:none;font-size:13px;font-weight:bold}
+.grid{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;padding:20px 20px 40px 20px;max-width:1200px;margin:0 auto}
+.card{background:#fff;width:310px;padding:22px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.08);transition:0.3s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(0,0,0,0.15)}
+.card::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,#0d5bd1,#0a4bb5)}
+.avatar{width:56px;height:56px;background:linear-gradient(135deg,#0d5bd1,#0a4bb5);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:22px;margin-bottom:12px}
+.name{color:#0d5bd1;margin:0 0 4px 0;font-size:18px}
+.spec{color:#071a3f;font-weight:bold;font-size:13px;margin:0 0 10px 0}
+.info{font-size:13px;color:#555;line-height:1.6;margin:0}
+.badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:bold;margin-top:10px}
+.available{background:#d4edda;color:#155724}
+.not-available{background:#ffe0e0;color:#b00020}
+.actions{margin-top:16px;display:flex;gap:8px}
+.btn-book{background:#0d5bd1;color:#fff;padding:9px 16px;border-radius:10px;text-decoration:none;font-size:13px;font-weight:bold;flex:1;text-align:center}
+.btn-view{background:#eef3ff;color:#0d5bd1;padding:9px 16px;border-radius:10px;text-decoration:none;font-size:13px;font-weight:bold}
+.empty{text-align:center;padding:50px;color:#666}
+</style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="top">
+  <h2>👨‍⚕️ Our Doctors - {{doctors.count}} Found</h2>
+  <div class="search-box">
+    <form method="get" style="display:flex;gap:8px;flex:1">
+      <input type="text" name="q" value="{{query}}" placeholder="Search by name or specialization - e.g. Cardiology, Neurology, Dr. Kumar...">
+      <button type="submit" class="btn-search">Search</button>
+    </form>
+    {% if query %}<a href="/doctors/" class="btn-clear">Clear</a>{% endif %}
+  </div>
+</div>
+
+{% if query %}
+<p style="text-align:center;color:#555;font-size:13px">Showing results for "<b>{{query}}</b>" - Feature 3 Search by name or specialization</p>
+{% endif %}
+
+<div class="grid">
+{% for d in doctors %}
+  <div class="card">
+    <div class="avatar">{{d.name|slice:":1"}}</div>
+    <h3 class="name">{{d.name}}</h3>
+    <p class="spec">{{d.specialization}}</p>
+    <p class="info">
+      🕒 {{d.experience}} Years Experience<br>
+      📞 {{d.contact}}<br>
+      ✉️ {{d.email}}
+    </p>
+    {% if d.available %}
+      <span class="badge available">● Available</span>
+    {% else %}
+      <span class="badge not-available">● Busy</span>
+    {% endif %}
+    <div class="actions">
+      <a href="/book/{{d.id}}/" class="btn-book">Book Now →</a>
+      <a href="/book/{{d.id}}/" class="btn-view">View</a>
+    </div>
+  </div>
+{% empty %}
+  <div class="empty">
+    <h3>No doctors found for "{{query}}"</h3>
+    <p style="font-size:13px">Try searching Cardiology, Neurology, Orthopedics, or Doctor name</p>
+    <br>
+    <a href="/doctors/" style="background:#0d5bd1;color:#fff;padding:10px 20px;border-radius:20px;text-decoration:none">Show All Doctors</a>
+    <br><br>
+    <p style="font-size:12px;color:#888">Add doctors in Admin Panel: /admin/ -> Doctor -> Add Doctor</p>
+  </div>
+{% endfor %}
+</div>
+
+{% include 'footer.html' %}
+</body>
+</html>

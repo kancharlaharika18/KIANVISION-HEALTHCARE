@@ -1,0 +1,80 @@
+<style>
+
+.navbar {
+  background: linear-gradient(90deg, #0d5bd1, #0a4bb5);
+  padding: 14px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+.logo {
+  color: #fff;
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.menu a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+.menu a:hover {
+  background: rgba(255,255,255,0.2);
+}
+.menu a.admin-btn {
+  background: #fff;
+  color: #0d5bd1 !important;
+  padding: 8px 18px;
+  font-weight: bold;
+}
+.menu a.admin-btn:hover {
+  background: #eef3ff;
+}
+@media (max-width: 768px) {
+  .navbar { flex-direction: column; gap: 10px; padding: 12px; }
+  .menu { justify-content: center; }
+  .menu a { margin-left: 6px; font-size: 12px; }
+}
+</style>
+
+<div class="navbar">
+  <a href="/" class="logo">✚ Healthcare</a>
+  <div class="menu">
+    <a href="/">Home</a>
+    <a href="/about/">About</a>
+    <a href="/doctors/">Doctors</a>
+    <a href="/register/">Register</a>
+    <a href="/my-appointments/">Appointments</a>
+    <a href="/history/">History</a>
+    <a href="/dashboard/" class="admin-btn">Admin Dashboard</a>
+  </div>
+</div>
+
+
+{% if messages %}
+<div style="max-width:900px;margin:15px auto;padding:0 20px">
+  {% for message in messages %}
+  <div style="padding:12px 16px;border-radius:10px;font-size:13px;font-weight:600;
+    {% if message.tags == 'error' %}background:#ffe0e0;color:#b00020;border:1px solid #ffb3b3
+    {% else %}background:#d4edda;color:#155724;border:1px solid #c3e6cb{% endif %}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

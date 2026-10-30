@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>History - Smart Healthcare</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff}
+.container{max-width:1100px;margin:25px auto;padding:0 20px}
+h2{color:#0d5bd1;margin:0}
+.sub{color:#666;font-size:13px;margin:8px 0 20px 0}
+.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.tabs a{padding:8px 18px;border-radius:20px;font-size:12px;font-weight:bold;text-decoration:none;border:1px solid #ddd}
+.tabs a.active{background:#0d5bd1;color:#fff;border-color:#0d5bd1}
+.tabs a:not(.active){background:#fff;color:#555}
+.grid{display:flex;flex-wrap:wrap;gap:18px}
+.card{background:#fff;width:330px;padding:20px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.07);border-left:5px solid #155724}
+.card.cancelled{border-left-color:#b00020}
+.status{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:bold;display:inline-block;margin-bottom:10px}
+.completed{background:#d4edda;color:#155724}
+.cancelled-status{background:#ffe0e0;color:#b00020}
+.info{font-size:13px;color:#444;line-height:1.7}
+.empty{text-align:center;padding:60px 20px;background:#fff;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+.count-box{display:flex;gap:15px;margin-bottom:20px;flex-wrap:wrap}
+.count{flex:1;min-width:150px;background:#fff;padding:16px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.06);text-align:center}
+.count h3{margin:0;color:#0d5bd1;font-size:24px}
+.count p{margin:4px 0 0 0;font-size:12px;color:#666;font-weight:bold}
+</style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="container">
+  <h2>📜 Appointment History</h2>
+  <p class="sub">Feature 10 - Completed & Cancelled History Tracking</p>
+
+  <div class="count-box">
+    <div class="count"><h3>{{completed_count}}</h3><p>✔ Completed</p></div>
+    <div class="count"><h3>{{cancelled_count}}</h3><p>✖ Cancelled</p></div>
+    <div class="count"><h3>{{total_count}}</h3><p>📊 Total History</p></div>
+  </div>
+
+  <div class="tabs">
+    <a href="/history/" class="{% if not request.GET.status %}active{% endif %}">All History</a>
+    <a href="/history/?status=Completed" class="{% if request.GET.status == 'Completed' %}active{% endif %}">Completed</a>
+    <a href="/history/?status=Cancelled" class="{% if request.GET.status == 'Cancelled' %}active{% endif %}">Cancelled</a>
+    <a href="/my-appointments/" style="margin-left:auto;background:#071a3f;color:#fff;border-color:#071a3f">← Upcoming Appointments</a>
+  </div>
+
+  <div class="grid">
+  {% for a in appointments %}
+    <div class="card {% if a.status == 'Cancelled' %}cancelled{% endif %}">
+      {% if a.status == 'Completed' %}
+        <span class="status completed">● Completed - Feature 10</span>
+      {% else %}
+        <span class="status cancelled-status">● Cancelled - Feature 10</span>
+      {% endif %}
+      <div class="info">
+        <b style="color:#0d5bd1">#{{a.id}} - {{a.patient.name}}</b><br>
+        👨‍⚕️ Dr. {{a.doctor.name}} ({{a.doctor.specialization}})<br>
+        📧 {{a.patient.email}}<br>
+        📅 Date: {{a.date}} | 🕒 Time: {{a.time}}<br>
+        🕑 History on: {{a.created_at|date:"d M Y h:i A"}}
+      </div>
+    </div>
+  {% empty %}
+    <div class="empty" style="width:100%">
+      <h3 style="color:#0d5bd1">No History Found</h3>
+      <p style="font-size:13px;color:#666">No Completed or Cancelled appointments yet. <br> Book and Complete/Cancel to see here.</p>
+      <br>
+      <a href="/doctors/" style="background:#0d5bd1;color:#fff;padding:10px 22px;border-radius:20px;text-decoration:none;font-weight:bold">Book Appointment →</a>
+    </div>
+  {% endfor %}
+  </div>
+</div>
+
+{% include 'footer.html' %}
+</body>
+</html>

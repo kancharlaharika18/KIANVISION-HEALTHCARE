@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart Healthcare - Home</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff}
+.hero{display:flex;flex-wrap:wrap;min-height:85vh}
+.left{flex:1;min-width:350px;background:linear-gradient(135deg,#0d5bd1,#0a4bb5);color:#fff;padding:60px 40px;display:flex;flex-direction:column;justify-content:center}
+.left h1{font-size:48px;line-height:1.2;margin:0}
+.left p{font-size:16px;margin-top:15px;opacity:0.9;line-height:1.6}
+.left .btn-white{background:#fff;color:#0d5bd1;border:none;padding:12px 24px;border-radius:30px;font-weight:bold;font-size:14px;margin-top:20px;cursor:pointer;text-decoration:none;display:inline-block;width:fit-content}
+.right{flex:1;min-width:350px;background:#eef3ff;display:flex;align-items:center;justify-content:center;padding:30px}
+.box{background:#fff;padding:28px;border-radius:16px;max-width:400px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.1)}
+.box h3{color:#0d5bd1;margin:0 0 15px 0;text-align:center}
+.input{width:100%;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #ddd;box-sizing:border-box;font-size:14px}
+.btn{width:100%;background:#0d5bd1;color:#fff;border:none;padding:12px;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:10px}
+.features{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;padding:40px 20px;background:#fff}
+.feat{width:250px;text-align:center;padding:20px;border-radius:12px;background:#f8faff}
+.feat h4{color:#0d5bd1}
+</style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="hero">
+  
+  <div class="left">
+    <h1>Smart Healthcare<br>Appointment<br>System</h1>
+    <p>Book, Manage, Track - All in one place.<br>Find best doctors by specialization, book instantly with validation, manage your appointments.</p>
+    <a href="/doctors/" class="btn-white">Find Doctors →</a>
+    <br><br>
+    <div style="display:flex;gap:30px;margin-top:20px">
+      <div><h2 style="margin:0">500+</h2><small>Patients</small></div>
+      <div><h2 style="margin:0">50+</h2><small>Doctors</small></div>
+      <div><h2 style="margin:0">100%</h2><small>Secure</small></div>
+    </div>
+  </div>
+
+
+  <div class="right">
+    <div class="box">
+      <h3>⚡ Quick Book Appointment</h3>
+      {% if messages %}{% for m in messages %}<p style="color:red;text-align:center;font-size:13px">{{m}}</p>{% endfor %}{% endif %}
+      <form method="post" action="/book/">
+        {% csrf_token %}
+        <select class="input" name="patient_id" required>
+          <option value="">Select Patient (Register first)</option>
+          {% for p in patients %}
+          <option value="{{p.id}}">{{p.name}}</option>
+          {% endfor %}
+        </select>
+        
+        <select class="input" name="doctor_id" required>
+          <option value="">Select Doctor</option>
+          {% for d in doctors %}
+          <option value="{{d.id}}">{{d.name}} - {{d.specialization}}</option>
+          {% endfor %}
+        </select>
+        <div style="display:flex;gap:8px">
+          <input class="input" type="date" name="date" required style="flex:1">
+          <input class="input" type="time" name="time" required style="flex:1">
+        </div>
+        <button class="btn">Book Now →</button>
+      </form>
+      <p style="text-align:center;font-size:11px;color:#888;margin-top:10px">PDF Feature 4 & 9 - Duplicate validation included</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="features">
+  <div class="feat"><h4>✅ Patient Registration</h4><p style="font-size:13px;color:#555">Register with name,email,phone,age,gender</p></div>
+  <div class="feat"><h4>🔍 Search Doctor</h4><p style="font-size:13px;color:#555">Search by name or specialization</p></div>
+  <div class="feat"><h4>📅 Book & Manage</h4><p style="font-size:13px;color:#555">Book, View, Cancel, History</p></div>
+  <div class="feat"><h4>🛡️ Validation</h4><p style="font-size:13px;color:#555">No duplicate booking same slot</p></div>
+</div>
+
+
+<div style="padding:30px;text-align:center">
+  <h2 style="color:#0d5bd1">Our Top Doctors</h2>
+  <div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;padding:20px">
+    {% for d in doctors %}
+    <div style="background:#fff;width:260px;padding:18px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.08)">
+      <h4 style="color:#0d5bd1;margin:0">Dr. {{d.name}}</h4>
+      <p style="font-size:13px;color:#555">{{d.specialization}} | {{d.experience}} yrs</p>
+      <a href="/book/{{d.id}}/" style="background:#0d5bd1;color:#fff;padding:7px 12px;border-radius:8px;text-decoration:none;font-size:13px">Book</a>
+    </div>
+    {% empty %}
+    <p>No doctors yet - Add in admin panel /admin/</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% include 'footer.html' %}
+</body>
+</html>

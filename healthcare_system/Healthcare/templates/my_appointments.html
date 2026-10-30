@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Appointments - Smart Healthcare</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff}
+.container{max-width:1100px;margin:25px auto;padding:0 20px}
+h2{color:#0d5bd1;margin:0 0 8px 0}
+.sub{color:#666;font-size:13px;margin-bottom:20px}
+.grid{display:flex;flex-wrap:wrap;gap:18px}
+.card{background:#fff;width:340px;padding:20px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.08);border-left:5px solid #0d5bd1}
+.card.cancelled{border-left-color:#b00020;opacity:0.85}
+.card.completed{border-left-color:#155724}
+.top-row{display:flex;justify-content:space-between;align-items:center}
+.status{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:bold}
+.scheduled{background:#eef3ff;color:#0d5bd1}
+.completed-status{background:#d4edda;color:#155724}
+.cancelled-status{background:#ffe0e0;color:#b00020}
+.info{font-size:13px;color:#444;line-height:1.7;margin:12px 0}
+.info b{color:#071a3f}
+.actions{display:flex;gap:8px;margin-top:14px}
+.btn{padding:8px 16px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:bold;border:none;cursor:pointer}
+.btn-cancel{background:#ffe0e0;color:#b00020}
+.btn-cancel:hover{background:#ffb3b3}
+.btn-complete{background:#d4edda;color:#155724}
+.btn-history{background:#0d5bd1;color:#fff}
+.empty{text-align:center;padding:60px 20px;background:#fff;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+.filter{margin-bottom:18px;display:flex;gap:8px;flex-wrap:wrap}
+.filter a{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:bold;text-decoration:none;border:1px solid #ddd}
+.filter a.active{background:#0d5bd1;color:#fff;border-color:#0d5bd1}
+.filter a:not(.active){background:#fff;color:#555}
+</style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="container">
+  <h2>📋 My Appointments - {{appointments.count}}</h2>
+  <p class="sub">Feature 5: View Upcoming | Feature 6: Cancel | Feature 7: Status Track</p>
+
+  <div class="filter">
+    <a href="/my-appointments/" class="active">All</a>
+    <a href="/my-appointments/?status=Scheduled">Scheduled</a>
+    <a href="/history/">History → Completed & Cancelled</a>
+    <a href="/doctors/" style="margin-left:auto;background:#071a3f;color:#fff;border-color:#071a3f">+ Book New</a>
+  </div>
+
+  <div class="grid">
+  {% for a in appointments %}
+    <div class="card {% if a.status == 'Cancelled' %}cancelled{% elif a.status == 'Completed' %}completed{% endif %}">
+      <div class="top-row">
+        <b style="color:#0d5bd1;font-size:14px">#{{a.id}} - {{a.patient.name}}</b>
+        {% if a.status == 'Scheduled' %}
+          <span class="status scheduled">● Scheduled</span>
+        {% elif a.status == 'Completed' %}
+          <span class="status completed-status">● Completed</span>
+        {% else %}
+          <span class="status cancelled-status">● Cancelled</span>
+        {% endif %}
+      </div>
+
+      <div class="info">
+        👨‍⚕️ <b>Doctor:</b> Dr. {{a.doctor.name}} ({{a.doctor.specialization}})<br>
+        📧 <b>Patient:</b> {{a.patient.email}}<br>
+        📞 <b>Contact:</b> {{a.doctor.contact}} | 👤 {{a.patient.phone}}<br>
+        📅 <b>Date:</b> {{a.date}}<br>
+        🕒 <b>Time:</b> {{a.time}}<br>
+        🕑 <b>Booked:</b> {{a.created_at|date:"d M Y, h:i A"}}
+      </div>
+
+      <div class="actions">
+        {% if a.status == 'Scheduled' %}
+          <a href="/cancel/{{a.id}}/" class="btn btn-cancel" onclick="return confirm('Cancel this appointment?')">✖ Cancel - Feature 6</a>
+          <a href="/complete/{{a.id}}/" class="btn btn-complete">✔ Complete</a>
+        {% else %}
+          <a href="/history/" class="btn btn-history">View in History</a>
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <div class="empty">
+      <h3 style="color:#0d5bd1">No Appointments Found</h3>
+      <p style="font-size:13px;color:#666">You haven't booked any appointments yet. Search doctor and book now!</p>
+      <br>
+      <a href="/doctors/" style="background:#0d5bd1;color:#fff;padding:10px 22px;border-radius:20px;text-decoration:none;font-weight:bold">Find Doctors →</a>
+      <a href="/register/" style="background:#fff;color:#0d5bd1;padding:10px 22px;border-radius:20px;text-decoration:none;font-weight:bold;border:1px solid #0d5bd1;margin-left:8px">Register Patient</a>
+    </div>
+  {% endfor %}
+  </div>
+</div>
+
+{% include 'footer.html' %}
+</body>
+</html>

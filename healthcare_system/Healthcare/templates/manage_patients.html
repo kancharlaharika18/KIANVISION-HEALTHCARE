@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Manage Patients</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff}
+.container{max-width:1100px;margin:25px auto;padding:0 20px}
+.card{background:#fff;padding:22px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:15px}
+th{background:#eef3ff;color:#0d5bd1;padding:12px;text-align:left}
+td{padding:12px;border-bottom:1px solid #eee}
+.badge{background:#eef3ff;color:#0d5bd1;padding:5px 12px;border-radius:20px;font-weight:bold;font-size:11px}
+.btn{padding:8px 16px;border-radius:20px;text-decoration:none;font-size:12px;font-weight:bold}
+.primary{background:#0d5bd1;color:#fff}
+</style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container">
+<div class="card">
+<h2 style="color:#0d5bd1">👤 Manage Patients - Total {{patients|length}}</h2>
+<table>
+<tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Age</th><th>Gender</th></tr>
+{% for p in patients %}
+<tr><td><span class="badge">#{{p.id}}</span></td><td><b>{{p.name}}</b></td><td>{{p.email}}</td><td>{{p.phone}}</td><td>{{p.age}}</td><td>{{p.gender}}</td></tr>
+{% empty %}
+<tr><td colspan="6" style="text-align:center;padding:30px;color:#888">No Patients Found</td></tr>
+{% endfor %}
+</table>
+<br>
+<a href="/register/" class="btn primary">+ New Patient</a>
+<a href="/dashboard/" style="margin-left:10px;color:#0d5bd1;font-weight:bold;text-decoration:none">← Dashboard</a>
+</div>
+</div>
+{% include 'footer.html' %}
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Manage Appointments</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff}
+.container{max-width:1150px;margin:25px auto;padding:0 20px}
+.card{background:#fff;padding:22px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:15px}
+th{background:#eef3ff;color:#0d5bd1;padding:12px;text-align:left}
+td{padding:12px;border-bottom:1px solid #eee}
+.badge{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:bold}
+.sched{background:#eef3ff;color:#0d5bd1}.comp{background:#d4edda;color:#155724}.canc{background:#ffe0e0;color:#b00020}
+.btn{padding:6px 12px;border-radius:20px;text-decoration:none;font-size:11px;font-weight:bold;margin:2px;display:inline-block}
+.success{background:#d4edda;color:#155724}.danger{background:#ffe0e0;color:#b00020}
+</style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container">
+<div class="card">
+<h2 style="color:#0d5bd1">📅 Manage Appointments - Total {{appointments|length}}</h2>
+<table>
+<tr><th>ID</th><th>Patient</th><th>Doctor</th><th>Date & Time</th><th>Status</th><th>Actions</th></tr>
+{% for a in appointments %}
+<tr>
+<td>#{{a.id}}</td>
+<td><b>{{a.patient.name}}</b><br><span style="font-size:11px;color:#888">{{a.patient.email}}</span></td>
+<td>Dr. {{a.doctor.name}}<br><span style="font-size:11px;color:#888">{{a.doctor.specialization}}</span></td>
+<td>{{a.date}}<br>{{a.time}}</td>
+<td>
+{% if a.status == 'Scheduled' %}<span class="badge sched">Scheduled</span>
+{% elif a.status == 'Completed' %}<span class="badge comp">Completed</span>
+{% else %}<span class="badge canc">Cancelled</span>{% endif %}
+</td>
+<td><a href="/complete/{{a.id}}/" class="btn success">Complete</a><a href="/cancel/{{a.id}}/" class="btn danger">Cancel</a></td>
+</tr>
+{% empty %}
+<tr><td colspan="6" style="text-align:center;padding:30px;color:#888">No Appointments</td></tr>
+{% endfor %}
+</table>
+<br><a href="/dashboard/" style="color:#0d5bd1;font-weight:bold;text-decoration:none">← Back to Dashboard</a>
+</div>
+</div>
+{% include 'footer.html' %}
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Patient Registration - Smart Healthcare</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff}
+.wrapper{display:flex;justify-content:center;align-items:center;min-height:85vh;padding:20px}
+.box{max-width:480px;width:100%;background:#fff;padding:32px 30px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.1)}
+.box h2{color:#0d5bd1;text-align:center;margin:0 0 6px 0}
+.box p.sub{text-align:center;color:#666;font-size:13px;margin-bottom:18px}
+.input, select{width:100%;padding:12px 14px;margin:8px 0;border-radius:10px;border:1px solid #ddd;box-sizing:border-box;font-size:14px;outline:none;transition:0.2s}
+.input:focus, select:focus{border-color:#0d5bd1;box-shadow:0 0 0 3px rgba(13,91,209,0.15)}
+.row{display:flex;gap:10px}
+.row .input, .row select{flex:1}
+.btn{width:100%;background:linear-gradient(90deg,#0d5bd1,#0a4bb5);color:#fff;border:none;padding:14px;border-radius:12px;font-weight:bold;font-size:15px;cursor:pointer;margin-top:12px}
+.btn:hover{opacity:0.9}
+.note{text-align:center;font-size:11px;color:#888;margin-top:12px}
+.link{text-align:center;margin-top:14px;font-size:13px}
+.link a{color:#0d5bd1;font-weight:bold;text-decoration:none}
+</style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="wrapper">
+  <div class="box">
+    <h2>👤 Patient Registration</h2>
+    <p class="sub">Feature 1 - Register with validation (Email unique)</p>
+
+    <form method="POST">
+      {% csrf_token %}
+      
+      <input class="input" type="text" name="name" placeholder="Full Name *" required>
+
+      <input class="input" type="email" name="email" placeholder="Email (unique) *" required>
+
+      <input class="input" type="tel" name="phone" placeholder="Phone Number * e.g. 9876543210" pattern="[0-9]{10}" title="10 digit phone" required>
+
+      <div class="row">
+        <input class="input" type="number" name="age" placeholder="Age *" min="1" max="120" required>
+        <select name="gender" required>
+          <option value="">Gender *</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <button class="btn" type="submit">Register Now →</button>
+      
+      <p class="note">Feature 9 - Input Validation: Email unique, Phone pattern, Age range</p>
+      
+      <div class="link">
+        Already Registered? <a href="/doctors/">Find Doctors</a> | <a href="/book/">Book Appointment</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% include 'footer.html' %}
+</body>
+</html>

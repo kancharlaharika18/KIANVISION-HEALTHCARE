@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Book Appointment - Smart Healthcare</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff}
+.wrap{display:flex;justify-content:center;padding:25px 20px;min-height:80vh;gap:25px;flex-wrap:wrap;max-width:1100px;margin:0 auto}
+.left-box{flex:1;min-width:320px;max-width:500px;background:#fff;padding:28px 26px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.1);height:fit-content}
+.right-box{flex:1;min-width:280px;max-width:360px;background:linear-gradient(135deg,#0d5bd1,#0a4bb5);color:#fff;padding:26px;border-radius:16px;height:fit-content}
+h2{color:#0d5bd1;margin:0 0 6px 0;text-align:center}
+h3{margin:0 0 12px 0}
+.sub{text-align:center;color:#666;font-size:12px;margin-bottom:16px}
+.input, select{width:100%;padding:12px 14px;margin:8px 0;border-radius:10px;border:1px solid #ddd;box-sizing:border-box;font-size:14px;outline:none}
+.input:focus, select:focus{border-color:#0d5bd1;box-shadow:0 0 0 3px rgba(13,91,209,0.15)}
+.row{display:flex;gap:10px}
+.row .input{flex:1}
+.btn{width:100%;background:linear-gradient(90deg,#0d5bd1,#0a4bb5);color:#fff;border:none;padding:14px;border-radius:12px;font-weight:bold;font-size:15px;cursor:pointer;margin-top:10px}
+.btn:hover{opacity:0.9}
+.doc-card{background:rgba(255,255,255,0.15);padding:14px;border-radius:12px;margin-bottom:12px}
+.doc-card h4{margin:0}
+.small{font-size:11px;opacity:0.9;margin-top:8px;line-height:1.5}
+.link{font-size:13px;text-align:center;margin-top:12px}
+.link a{color:#0d5bd1;font-weight:bold;text-decoration:none}
+.selected{border:2px solid #0d5bd1;background:#eef3ff}
+</style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="wrap">
+
+  <!-- LEFT - BOOK FORM -->
+  <div class="left-box">
+    <h2>📅 Book Appointment</h2>
+    <p class="sub">Feature 4 - Book with Doctor + Feature 9 - No duplicate slot</p>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <label style="font-size:13px;font-weight:bold">Select Patient *</label>
+      <select name="patient_id" required>
+        <option value="">-- Choose Patient --</option>
+        {% for p in patients %}
+        <option value="{{p.id}}">{{p.name}} - {{p.email}}</option>
+        {% endfor %}
+      </select>
+      <div class="link" style="text-align:left;margin:0 0 8px 0"><a href="/register/">+ New Patient? Register Here</a></div>
+
+      <label style="font-size:13px;font-weight:bold">Select Doctor *</label>
+      <select name="doctor_id" required>
+        <option value="">-- Choose Doctor --</option>
+        {% for d in doctors %}
+        <option value="{{d.id}}" {% if selected_doctor and selected_doctor.id == d.id %}selected class="selected"{% endif %}>Dr. {{d.name}} - {{d.specialization}} ({{d.experience}} yrs)</option>
+        {% endfor %}
+      </select>
+
+      <div class="row">
+        <div style="flex:1">
+          <label style="font-size:13px;font-weight:bold">Date *</label>
+          <input class="input" type="date" name="date" required>
+        </div>
+        <div style="flex:1">
+          <label style="font-size:13px;font-weight:bold">Time *</label>
+          <input class="input" type="time" name="time" required>
+        </div>
+      </div>
+
+      <button class="btn" type="submit">Confirm Booking →</button>
+      
+      <p style="font-size:11px;color:#888;text-align:center;margin-top:10px">Feature 9: If doctor already booked same date+time, error will show. No double booking!</p>
+    </form>
+  </div>
+
+  <!-- RIGHT - INFO -->
+  <div class="right-box">
+    {% if selected_doctor %}
+      <h3>✅ Selected Doctor</h3>
+      <div class="doc-card">
+        <h4>Dr. {{selected_doctor.name}}</h4>
+        <p style="margin:6px 0 0 0;font-size:13px">{{selected_doctor.specialization}} | {{selected_doctor.experience}} yrs Exp</p>
+        <p style="margin:4px 0;font-size:13px">📞 {{selected_doctor.contact}}<br>✉️ {{selected_doctor.email}}</p>
+        {% if selected_doctor.available %}<p style="font-size:12px;background:#fff;color:#0d5bd1;padding:4px 10px;border-radius:20px;display:inline-block;margin-top:8px">● Available</p>{% endif %}
+      </div>
+    {% else %}
+      <h3>👨‍⚕️ How Booking Works</h3>
+      <div class="doc-card">
+        <p style="margin:0;font-size:13px;line-height:1.7">
+          1. Register Patient first in /register/<br>
+          2. Select Patient & Doctor<br>
+          3. Choose Date & Time<br>
+          4. Confirm - System checks duplicate<br>
+          5. View in /my-appointments/
+        </p>
+      </div>
+    {% endif %}
+
+    <h3 style="margin-top:20px">🛡️ Validation - Feature 9</h3>
+    <p class="small">
+      ✔ Email must be unique<br>
+      ✔ Doctor cannot be booked twice same date & time<br>
+      ✔ unique_together = (doctor, date, time)<br>
+      ✔ Error message shown if busy
+    </p>
+
+    <h3 style="margin-top:20px">📋 Status - Feature 7</h3>
+    <p class="small">
+      Scheduled → New booking<br>
+      Completed → After consultation<br>
+      Cancelled → User cancels<br>
+    </p>
+
+    <div style="margin-top:20px;text-align:center">
+      <a href="/doctors/" style="background:#fff;color:#0d5bd1;padding:9px 16px;border-radius:20px;text-decoration:none;font-weight:bold;font-size:13px">← Back to Doctors</a>
+    </div>
+  </div>
+
+</div>
+
+{% include 'footer.html' %}
+</body>
+</html>

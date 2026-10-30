@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+<style>
+body{margin:0;font-family:Arial;background:#f2f6ff}
+.container{max-width:1200px;margin:25px auto;padding:0 20px}
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.stat{flex:1;min-width:200px;background:#fff;padding:20px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.08);border-left:5px solid #0d5bd1}
+.stat h3{margin:0;font-size:28px;color:#0d5bd1}
+.stat p{margin:5px 0 0 0;font-size:11px;color:#666;font-weight:bold}
+.card{background:#fff;padding:22px;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.08);margin-bottom:20px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#eef3ff;color:#0d5bd1;padding:10px;text-align:left}
+td{padding:10px;border-bottom:1px solid #eee}
+.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:bold}
+.sched{background:#eef3ff;color:#0d5bd1}
+.comp{background:#d4edda;color:#155724}
+.canc{background:#ffe0e0;color:#b00020}
+.links a{padding:8px 16px;border-radius:20px;text-decoration:none;font-size:12px;font-weight:bold;margin:4px;display:inline-block}
+.primary{background:#0d5bd1;color:#fff}
+.secondary{background:#fff;color:#0d5bd1;border:1px solid #0d5bd1}
+</style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container">
+<h2 style="color:#0d5bd1">📊 Admin Dashboard - Feature 8</h2>
+<p style="font-size:13px;color:#666">Role Based System - All Counts & Recent</p>
+
+<div class="stats">
+<div class="stat"><h3>{{total_patients}}</h3><p>👤 Patients</p></div>
+<div class="stat"><h3>{{total_doctors}}</h3><p>👨‍⚕️ Doctors</p></div>
+<div class="stat"><h3>{{total_appointments}}</h3><p>📅 Total Appointments</p></div>
+<div class="stat"><h3>{{scheduled_count}}</h3><p>⏳ Scheduled</p></div>
+</div>
+
+<div class="stats">
+<div class="stat"><h3 style="color:#155724">{{completed_count}}</h3><p>✔ Completed</p></div>
+<div class="stat"><h3 style="color:#b00020">{{cancelled_count}}</h3><p>✖ Cancelled</p></div>
+<div class="stat"><h3>{{today_count}}</h3><p>📆 Today</p></div>
+<div class="stat"><h3 style="color:#071a3f">Admin</h3><p>🔐 Role</p></div>
+</div>
+
+<div style="display:flex;gap:20px;flex-wrap:wrap">
+<div class="card" style="flex:2;min-width:320px">
+<h3 style="color:#0d5bd1">🕒 Recent 10 Appointments</h3>
+<table>
+<tr><th>ID</th><th>Patient</th><th>Doctor</th><th>Date</th><th>Status</th></tr>
+{% for a in recent_appointments %}
+<tr>
+<td>#{{a.id}}</td>
+<td>{{a.patient.name}}<br><span style="font-size:11px;color:#888">{{a.patient.email}}</span></td>
+<td>Dr. {{a.doctor.name}}<br><span style="font-size:11px;color:#888">{{a.doctor.specialization}}</span></td>
+<td>{{a.date}} {{a.time}}</td>
+<td>
+{% if a.status == 'Scheduled' %}<span class="badge sched">Scheduled</span>
+{% elif a.status == 'Completed' %}<span class="badge comp">Completed</span>
+{% else %}<span class="badge canc">Cancelled</span>{% endif %}
+</td>
+</tr>
+{% empty %}
+<tr><td colspan="5" style="text-align:center;color:#888">No data</td></tr>
+{% endfor %}
+</table>
+<div style="margin-top:15px">
+<a href="/my-appointments/" class="links primary">View All</a>
+<a href="/admin/" class="links secondary">Django Admin</a>
+</div>
+</div>
+<div class="card" style="flex:1;min-width:280px">
+<h3 style="color:#0d5bd1">⚡ Quick Actions</h3>
+<a href="/manage-patients/" class="links primary">👤 Manage Patients</a>
+<a href="/manage-doctors/" class="links primary">👨‍⚕️ Manage Doctors</a>
+<a href="/manage-appointments/" class="links primary">📅 Manage Appointments</a>
+<a href="/doctors/" class="links secondary">Find Doctors</a>
+<a href="/register/" class="links secondary">+ New Patient</a>
+<br><br>
+<p style="font-size:12px">✅ 10 Features Done<br>Feature 8 - Admin Dashboard Complete</p>
+</div>
+
+
+</div>
+
+</div>
+{% include 'footer.html' %}
+</body>
+</html>
